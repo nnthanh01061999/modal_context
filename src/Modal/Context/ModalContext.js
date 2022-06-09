@@ -1,10 +1,9 @@
 import React from "react";
-
-export let ModalHandler = {};
+import {ModalReducer} from "../Reducer/ModalReducer";
 export const ModalContext = React.createContext();
 
 const ModalContextProvider = ({ children }) => {
-  const [data, setData] = React.useState({
+  const [data, dispatch] = React.useReducer(ModalReducer, {
     openedModals: [],
     modalData: {},
   });
@@ -12,12 +11,12 @@ const ModalContextProvider = ({ children }) => {
   const openModal = (name = undefined, data_ = undefined) => {
     if (name) {
       if (!data.openedModals.includes(name)) {
-        setData({
-          ...data,
-          openedModals: [...data.openedModals, name],
-          modalData: {
-            ...data.modalData,
-            [name]: data_,
+        console.log("aa");
+        dispatch({
+          type: "OPEN_MODAL",
+          payload: {
+            name,
+            data: data_,
           },
         });
       }
@@ -26,35 +25,24 @@ const ModalContextProvider = ({ children }) => {
 
   const closeModal = (name = undefined) => {
     if (name) {
-      setData({
-        ...data,
-        openedModals: data?.openedModals?.filter((item) => item !== name),
-        modalData: {
-          ...data.modalData,
-          [name]: undefined,
+      dispatch({
+        type: "CLOSE_MODAL",
+        payload: {
+          name,
         },
       });
     }
   };
 
   const closeAllModal = () => {
-    setData({
-      ...data,
-      openedModals: [],
-      modalData: {},
+    dispatch({
+      type: "CLOSE_ALL_MODAL",
     });
   };
-
   const contextData = {
     data,
-    openModal,
     closeModal,
-    closeAllModal,
-  };
-
-  ModalHandler = {
     openModal,
-    closeModal,
     closeAllModal,
   };
 

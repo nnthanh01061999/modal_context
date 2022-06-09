@@ -1,9 +1,9 @@
 import React from 'react';
 import { ModalContext } from '../Context/ModalContext'
 
-const withModalHandler = (Modal, name) => props => {
+const withModalHook = (Modal, name) => props => {
     const { data, closeModal } = React.useContext(ModalContext)
-
+    
     const handleClose = () => {
         closeModal(name)
     }
@@ -15,4 +15,4 @@ const withModalHandler = (Modal, name) => props => {
     return null;
 };
 
-export default withModalHandler;
+export default withModalHook;
